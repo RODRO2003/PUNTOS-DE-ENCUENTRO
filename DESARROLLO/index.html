@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#ff8800" />
+    <meta
+      name="description"
+      content="Mapa de los 24 puntos de encuentro del Anexo 05 de SMCV. Consulta de referencias y proximidad GPS. No sustituye el plan de emergencias."
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Puntos de encuentro | SMCV</title>
+    <link rel="icon" type="image/png" href="assets/cerro-verde-logo.png" />
+    <link rel="stylesheet" href="vendor/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+    //Archivos locales. Publicar mediante HTTPS para utilizar ubicacion.//
+    <script defer src="vendor/leaflet.js"></script>
+    <script defer src="vendor/lucide.js"></script>
+    <script defer src="points.js"></script>
+    <script defer src="geo.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Puntos de encuentro, inicio">
+        <img
+          class="brand-logo"
+          src="assets/cerro-verde-logo.png"
+          alt="Cerro Verde"
+        />
+        <span
+          ><strong>PUNTOS DE ENCUENTRO</strong
+          ><small>SOCIEDAD MINERA CERRO VERDE</small></span
+        >
+      </a>
+      <span class="header-label">Consulta de referencia</span>
+      <div id="header-actions" class="header-actions" hidden>
+        <button
+          class="locate-button"
+          id="locate"
+          type="button"
+          title="Mi ubicaci&oacute;n"
+          aria-label="Mi ubicaci&oacute;n"
+        ><i data-lucide="locate-fixed" aria-hidden="true"></i></button>
+        <a
+          href="#inicio"
+          class="icon-button"
+          title="Volver al inicio"
+          aria-label="Volver al inicio"
+        ><i data-lucide="arrow-left" aria-hidden="true"></i></a>
+      </div>
+    </header>
+    <div id="network-notice" class="network-notice" role="status" hidden>
+      Sin conexi&oacute;n. El mapa base puede no cargar. No cierres esta
+      p&aacute;gina para seguir consultando las coordenadas ya cargadas.
+    </div>
+    <main id="main">
+      <section id="home" class="home" aria-label="Puntos de encuentro">
+        <div class="home-inner">
+          <div class="home-actions">
+            <button
+              id="evacuate"
+              class="action-tile evacuation-action"
+              type="button"
+            >
+              <i class="tile-icon" data-lucide="siren" aria-hidden="true"></i>
+              <span class="tile-text"
+                ><strong>Punto de Encuentro</strong
+                ><span>Consultar el punto m&aacute;s cercano</span></span
+              >
+              <i
+                class="tile-arrow"
+                data-lucide="arrow-up-right"
+                aria-hidden="true"
+              ></i>
+            </button>
+            <button id="visualize" class="action-tile map-action" type="button">
+              <i class="tile-icon" data-lucide="map" aria-hidden="true"></i>
+              <span class="tile-text">Visualizar todos los puntos en el mapa</span>
+              <i
+                class="tile-arrow"
+                data-lucide="arrow-up-right"
+                aria-hidden="true"
+              ></i>
+            </button>
+          </div>
+          <section class="emergency-contacts" aria-labelledby="contacts-title">
+            <h2 id="contacts-title">Contactos de emergencia</h2>
+            <table class="contacts-table" aria-labelledby="contacts-title">
+              <thead>
+                <tr><th scope="col">Contacto</th><th scope="col">Tel&eacute;fono</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Medio ambiente<small>Celular de turno</small></th>
+                  <td><a href="tel:+51959544302" aria-label="Llamar al celular de turno de Medio ambiente: 959 544 302"><i data-lucide="phone" aria-hidden="true"></i><span>959 544 302</span></a></td>
+                </tr>
+                <tr>
+                  <th scope="row">Supervisor SSO<small>De turno</small></th>
+                  <td><a href="tel:+51964286000" aria-label="Llamar al Supervisor SSO de turno: 964 286 000"><i data-lucide="phone" aria-hidden="true"></i><span>964 286 000</span></a></td>
+                </tr>
+                <tr>
+                  <th scope="row">Central de emergencias</th>
+                  <td>
+                    <a href="tel:+51943412020" aria-label="Llamar a la Central de emergencias: 943 412 020"><i data-lucide="phone" aria-hidden="true"></i><span>943 412 020</span></a>
+                    <a href="tel:+5154381515" aria-label="Llamar a la Central de emergencias: 054 381515. Solicitar el anexo 2222"><i data-lucide="phone" aria-hidden="true"></i><span>054 381515</span></a>
+                    <small class="contact-extension">Anexo 2222</small>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Central de soporte de salud</th>
+                  <td><a href="tel:+5154603066" aria-label="Llamar a la Central de soporte de salud: 054 603066"><i data-lucide="phone" aria-hidden="true"></i><span>054 603066</span></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <div class="home-meta">
+            <span
+              ><i data-lucide="locate-fixed" aria-hidden="true"></i>
+              Ubicaci&oacute;n con tu permiso</span
+            ><a href="anexo-05.pdf" target="_blank" rel="noopener"
+              >Consultar documento
+              <i data-lucide="external-link" aria-hidden="true"></i
+            ></a>
+          </div>
+        </div>
+        <footer class="home-footer">
+          <span>Fuente: Anexo 05 &middot; Archivo 05/08/2026</span
+          ><span
+            >Versi&oacute;n de referencia no oficial &middot; Validaci&oacute;n
+            operativa pendiente</span
+          >
+        </footer>
+      </section>
+      <section
+        id="workspace"
+        class="workspace"
+        aria-label="Mapa de puntos de encuentro"
+        tabindex="-1"
+        hidden
+      >
+        <p id="location-notice" class="location-notice" role="status" hidden></p>
+        <div class="map-layout">
+          <div id="nearest" class="nearest" hidden></div>
+          <div class="map-area">
+            <div
+              id="map"
+              aria-label="Mapa interactivo de puntos de encuentro"
+            ></div>
+            <div class="map-tools">
+              <button
+                id="fit-points"
+                type="button"
+                class="icon-button"
+                aria-label="Ver todos los puntos"
+                title="Ver todos los puntos"
+              >
+                <i data-lucide="expand" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div id="tile-notice" class="tile-notice" role="status" hidden>
+              <span
+                >No se pudo cargar parte del mapa base. Las coordenadas y fichas
+                siguen disponibles.</span
+              ><button id="retry-tiles" type="button">Reintentar</button>
+            </div>
+            <div class="map-legend">
+              <span><b class="legend-point"></b> Punto de encuentro</span
+              ><span id="user-legend" hidden
+                ><b class="legend-user"></b> Tu ubicaci&oacute;n</span
+              >
+            </div>
+          </div>
+          <aside
+            class="side-panel"
+            aria-label="Puntos de encuentro y ubicaci&oacute;n"
+          >
+            <div id="point-detail" class="point-detail" hidden></div>
+            <button
+              id="points-toggle"
+              class="points-heading"
+              type="button"
+              aria-expanded="false"
+              aria-controls="points-list"
+            >
+              <span>Todos los puntos</span>
+              <span class="points-heading-right">
+                <span class="count">24</span>
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </span>
+            </button>
+            <div id="points-list" class="points-list" hidden></div>
+            <div class="panel-footer">
+              Datos del archivo 05/08/2026. Verifica su vigencia en el servidor
+              de SMCV.<a href="anexo-05.pdf" target="_blank" rel="noopener"
+                >Anexo 05 original
+                <i data-lucide="external-link" aria-hidden="true"></i
+              ></a>
+            </div>
+          </aside>
+        </div>
+        <div class="workspace-footer">
+          <span>Referencia no oficial. No env&iacute;a alertas.</span
+          ><span>Mapa base: conexi&oacute;n a internet requerida</span>
+        </div>
+      </section>
+      <noscript
+        ><p class="no-script">
+          Activa JavaScript para utilizar el mapa. Puedes consultar
+          <a href="anexo-05.pdf">el documento original con todos los puntos</a>.
+        </p></noscript
+      >
+    </main>
+  </body>
+</html>
